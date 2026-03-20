@@ -1,0 +1,53 @@
+export const lightColors = {
+  background: '#F5F8F6',
+  surface: '#FFFFFF',
+  surfaceVariant: '#EDF3EF',
+  primary: '#006239',
+  primaryLight: '#D6EDE2',
+  accent: '#00897B',
+  success: '#2E7D32',
+  successLight: '#C8E6C9',
+  warning: '#F59E0B',
+  danger: '#EF4444',
+  dangerLight: '#FEE2E2',
+  text: '#1A2E22',
+  textSecondary: '#4D6A57',
+  textTertiary: '#8AA595',
+  border: '#C8DDD2',
+  borderLight: '#E6F0EA',
+  shadow: 'rgba(0, 98, 57, 0.08)',
+  overlay: 'rgba(0, 0, 0, 0.5)',
+  card: '#FFFFFF',
+  tabBar: '#FFFFFF',
+  tabBarBorder: '#C8DDD2',
+  statusBar: 'dark' as const,
+};
+
+export const darkColors = {
+  background: '#0A1410',
+  surface: '#111C17',
+  surfaceVariant: '#1A2920',
+  primary: '#4CAF82',
+  primaryLight: '#0D2E1E',
+  accent: '#26C6A8',
+  success: '#66BB6A',
+  successLight: '#0D2E0E',
+  warning: '#FBBF24',
+  danger: '#F87171',
+  dangerLight: '#7F1D1D',
+  text: '#DFF0E7',
+  textSecondary: '#8FBF9F',
+  textTertiary: '#5A8A6A',
+  border: '#243D2C',
+  borderLight: '#1A2920',
+  shadow: 'rgba(0, 0, 0, 0.35)',
+  overlay: 'rgba(0, 0, 0, 0.7)',
+  card: '#111C17',
+  tabBar: '#111C17',
+  tabBarBorder: '#243D2C',
+  statusBar: 'light' as const,
+};
+
+export type ThemeColors = Omit<typeof lightColors, 'statusBar'> & {
+  statusBar: 'light' | 'dark';
+};
