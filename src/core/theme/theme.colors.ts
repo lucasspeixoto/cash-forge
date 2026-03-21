@@ -29,6 +29,7 @@ export const lightColors = {
   tabBarBorder: '#C8DDD2',
   backgroundSecondary: '#D9E8E7',
   backgroundTertiary: '#FFFFFF',
+  icon: '#6B7280',
   statusBar: 'dark' as const,
 };
 
@@ -63,6 +64,7 @@ export const darkColors = {
   tabBarBorder: '#3f4948',
   backgroundSecondary: '#082928',
   backgroundTertiary: '#000000',
+  icon: '#94A3B8',
   statusBar: 'light' as const,
 };
 

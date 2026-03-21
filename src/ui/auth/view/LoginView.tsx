@@ -1,10 +1,29 @@
+import { AntDesign } from '@expo/vector-icons';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useForm } from 'react-hook-form';
+import { KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { z } from 'zod';
 import { useTheme } from '../../../core/theme/theme.hooks';
 import { typography } from '../../../core/theme/theme.typography';
+import { ThemedInputForm } from '../../shared/components/input/ThemedInputForm';
 import { useAuth } from '../view-models/useAuth';
+
+const schema = z.object({
+  email: z
+    .string({
+      error: 'O email é obrigatório!',
+    })
+    .nonempty('O email é obrigatório!'),
+  password: z
+    .string({
+      error: 'A senha é obrigatória!',
+    })
+    .nonempty('A senha é obrigatória!')
+    .min(6, 'A senha deve ter pelo menos 6 caracteres!'),
+});
 
 export const LoginView = () => {
   const { signIn } = useAuth();
@@ -14,8 +33,13 @@ export const LoginView = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  const login = async () => {
-    await signIn(email || 'lspeixotodev@gmail.com', password || 'lucas5678');
+  const { control, handleSubmit, formState } = useForm({
+    resolver: zodResolver(schema),
+  });
+
+  const onSubmit = async (formData: { email: string; password: string }) => {
+    const { email, password } = formData;
+    await signIn(email, password);
   };
 
   return (
@@ -36,49 +60,30 @@ export const LoginView = () => {
 
             {/* Login Form */}
             <View style={styles.formContainer}>
-              {/* Email Input */}
-              <View style={styles.inputWrapper}>
-                <Text style={[styles.label, { color: colors.textSecondary }]}>EMAIL</Text>
-                <TextInput
-                  style={[
-                    styles.input,
-                    {
-                      backgroundColor: colors.surfaceVariant,
-                      borderColor: colors.border,
-                      borderWidth: 1,
-                      color: colors.text,
-                    },
-                  ]}
+              {/* Form */}
+              <View>
+                <ThemedInputForm
+                  control={control}
+                  name="email"
+                  label="Email"
                   placeholder="Digite seu email"
-                  placeholderTextColor={colors.textTertiary}
-                  value={email}
-                  onChangeText={setEmail}
                   keyboardType="email-address"
                   autoCapitalize="none"
+                  error={formState?.errors.email?.message}
                 />
-              </View>
-
-              {/* Password Input */}
-              <View style={styles.inputWrapper}>
-                <Text style={[styles.label, { color: colors.textSecondary }]}>SENHA</Text>
-                <View
-                  style={[
-                    styles.passwordContainer,
-                    { backgroundColor: colors.surfaceVariant, borderColor: colors.border, borderWidth: 1 },
-                  ]}
-                >
-                  <TextInput
-                    style={[styles.passwordInput, { color: colors.text }]}
-                    placeholder="Digite sua senha"
-                    placeholderTextColor={colors.textTertiary}
-                    value={password}
-                    onChangeText={setPassword}
-                    secureTextEntry={!showPassword}
-                  />
-                  <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.visibilityButton}>
-                    <Text style={{ color: colors.textSecondary }}>{showPassword ? 'Ocultar' : 'Ver'}</Text>
-                  </TouchableOpacity>
-                </View>
+                <ThemedInputForm
+                  control={control}
+                  name="password"
+                  label="Senha"
+                  placeholder="Digite sua senha"
+                  secureTextEntry={!showPassword}
+                  error={formState?.errors.password?.message}
+                  rightElement={
+                    <TouchableOpacity style={styles.eyeButton} onPress={() => setShowPassword((prev) => !prev)}>
+                      <AntDesign name={showPassword ? 'eye' : 'eye-invisible'} size={20} color={colors.icon} />
+                    </TouchableOpacity>
+                  }
+                />
               </View>
 
               {/* Forgot Password Link */}
@@ -90,7 +95,7 @@ export const LoginView = () => {
             </View>
 
             {/* Primary Action */}
-            <TouchableOpacity style={[styles.loginButton, { backgroundColor: colors.primary }]} onPress={login}>
+            <TouchableOpacity style={[styles.loginButton, { backgroundColor: colors.primary }]} onPress={handleSubmit(onSubmit)}>
               <Text style={[styles.loginButtonText, { color: colors.surface }]}>Entrar</Text>
             </TouchableOpacity>
           </View>
@@ -143,6 +148,11 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     marginBottom: 24,
+  },
+  eyeButton: {
+    position: 'absolute',
+    padding: 12,
+    right: 6,
   },
   inputWrapper: {
     marginBottom: 16,

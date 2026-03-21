@@ -3,40 +3,40 @@ import { typography } from '@/src/core/theme/theme.typography';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-interface WalletCardProps {
+interface AccountCardProps {
   name: string;
   balance: string;
   borderColor: string;
 }
 
-export function WalletCard({ name, balance, borderColor }: WalletCardProps) {
+export function AccountCard({ name, balance, borderColor }: AccountCardProps) {
   const { colors } = useTheme();
 
   return (
     <View
       style={[
-        styles.walletCard,
+        styles.accountCard,
         { backgroundColor: colors.borderLight, borderLeftColor: borderColor, borderLeftWidth: 4 },
       ]}
     >
-      <Text style={[styles.walletName, { color: colors.textSecondary }]}>{name}</Text>
-      <Text style={[styles.walletBalance, { color: colors.text }]}>{balance}</Text>
+      <Text style={[styles.accountName, { color: colors.textSecondary }]}>{name}</Text>
+      <Text style={[styles.accountBalance, { color: colors.text }]}>{balance}</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  walletCard: {
+  accountCard: {
     minWidth: 160,
     padding: 16,
     borderRadius: 16,
   },
-  walletName: {
+  accountName: {
     ...typography.small,
     textTransform: 'uppercase',
     marginBottom: 4,
   },
-  walletBalance: {
+  accountBalance: {
     ...typography.bodyMedium,
   },
 });

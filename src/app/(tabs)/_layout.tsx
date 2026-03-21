@@ -30,28 +30,28 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
+          title: 'Dashboard',
           tabBarIcon: ({ color }) => <MaterialIcons size={24} name="grid-view" color={color} />,
         }}
       />
       <Tabs.Screen
         name="history"
         options={{
-          title: 'History',
+          title: 'Histórico',
           tabBarIcon: ({ color }) => <MaterialIcons size={24} name="receipt-long" color={color} />,
         }}
       />
       <Tabs.Screen
-        name="wallets"
+        name="accounts"
         options={{
-          title: 'Wallets',
-          tabBarIcon: ({ color }) => <MaterialIcons size={24} name="account-balance-wallet" color={color} />,
+          title: 'Contas',
+          tabBarIcon: ({ color }) => <MaterialIcons size={24} name="account-balance" color={color} />,
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
-          title: 'Settings',
+          title: 'Configurações',
           tabBarIcon: ({ color }) => <MaterialIcons size={24} name="settings" color={color} />,
         }}
       />

@@ -1,7 +1,7 @@
 import { useTheme } from '@/src/core/theme/theme.hooks';
 import { typography } from '@/src/core/theme/theme.typography';
 import { TransactionRow } from '@/src/ui/transactions/components/TransactionRow';
-import { WalletCard } from '@/src/ui/transactions/components/WalletCard';
+import { AccountCard } from '@/src/ui/transactions/components/AccountCard';
 import { MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
@@ -143,15 +143,15 @@ export default function HomeScreen() {
             </View>
           </View>
 
-          {/* Wallets Preview */}
+          {/* Accounts Preview */}
           <View
-            style={[styles.walletsSection, { backgroundColor: colors.surfaceContainer, borderColor: colors.border }]}
+            style={[styles.accountsSection, { backgroundColor: colors.surfaceContainer, borderColor: colors.border }]}
           >
             <Text style={[styles.cardTitle, { color: colors.text, marginBottom: 16 }]}>Minhas Contas</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.walletsScroll}>
-              <WalletCard name="Nubank" balance="R$ 24.500" borderColor={colors.primary} />
-              <WalletCard name="XP Investimentos" balance="R$ 118.350" borderColor={colors.accent} />
-              <WalletCard name="Carteira" balance="R$ 450,00" borderColor={colors.textTertiary} />
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.accountsScroll}>
+              <AccountCard name="Nubank" balance="R$ 24.500" borderColor={colors.primary} />
+              <AccountCard name="XP Investimentos" balance="R$ 118.350" borderColor={colors.accent} />
+              <AccountCard name="Carteira" balance="R$ 450,00" borderColor={colors.textTertiary} />
             </ScrollView>
           </View>
         </View>
@@ -302,12 +302,12 @@ const styles = StyleSheet.create({
   transactionsList: {
     gap: 24,
   },
-  walletsSection: {
+  accountsSection: {
     borderRadius: 24,
     padding: 24,
     borderWidth: 1,
   },
-  walletsScroll: {
+  accountsScroll: {
     gap: 16,
   },
   fab: {
