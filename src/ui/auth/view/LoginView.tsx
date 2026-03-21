@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../../../core/theme/theme.hooks';
+import { typography } from '../../../core/theme/theme.typography';
 import { useAuth } from '../view-models/useAuth';
 
 export const LoginView = () => {
@@ -24,11 +25,11 @@ export const LoginView = () => {
           <View style={styles.content}>
             {/* Brand Identity Section */}
             <View style={styles.brandContainer}>
-              <View
+              {/* <View
                 style={[styles.logoContainer, { backgroundColor: colors.primaryLight, shadowColor: colors.primary }]}
               >
-                <Text style={{ fontSize: 32 }}>🛡️</Text>
-              </View>
+                <Text style={typography.largeTitle}>🛡️</Text>
+              </View> */}
               <Text style={[styles.brandText, { color: colors.primary }]}>Finance Pro</Text>
               <Text style={[styles.titleText, { color: colors.text }]}>Bem-vindo de volta</Text>
             </View>
@@ -48,7 +49,7 @@ export const LoginView = () => {
                       color: colors.text,
                     },
                   ]}
-                  placeholder="seu@email.com"
+                  placeholder="Digite seu email"
                   placeholderTextColor={colors.textTertiary}
                   value={email}
                   onChangeText={setEmail}
@@ -68,7 +69,7 @@ export const LoginView = () => {
                 >
                   <TextInput
                     style={[styles.passwordInput, { color: colors.text }]}
-                    placeholder="••••••••"
+                    placeholder="Digite sua senha"
                     placeholderTextColor={colors.textTertiary}
                     value={password}
                     onChangeText={setPassword}
@@ -132,16 +133,13 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   brandText: {
-    fontSize: 24,
-    fontWeight: '900',
+    ...typography.title,
+    fontWeight: '900', // Override 700 with 900 for brand identity
     textTransform: 'uppercase',
-    letterSpacing: -0.5,
     marginBottom: 8,
   },
   titleText: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    letterSpacing: -0.5,
+    ...typography.largeTitle,
   },
   formContainer: {
     marginBottom: 24,
@@ -150,8 +148,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   label: {
-    fontSize: 12,
-    fontWeight: '500',
+    ...typography.smallMedium,
     letterSpacing: 1,
     marginBottom: 8,
     marginLeft: 4,
@@ -160,7 +157,7 @@ const styles = StyleSheet.create({
     height: 56,
     borderRadius: 8,
     paddingHorizontal: 16,
-    fontSize: 16,
+    ...typography.body,
   },
   passwordContainer: {
     flexDirection: 'row',
@@ -172,7 +169,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: '100%',
     paddingHorizontal: 16,
-    fontSize: 16,
+    ...typography.body,
   },
   visibilityButton: {
     paddingHorizontal: 16,
@@ -182,8 +179,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   forgotPasswordText: {
-    fontSize: 14,
-    fontWeight: '500',
+    ...typography.link,
   },
   loginButton: {
     height: 56,
@@ -193,7 +189,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   loginButtonText: {
-    fontSize: 18,
-    fontWeight: '800',
+    ...typography.subtitle,
+    fontWeight: '800', // Override 600 with 800
   },
 });

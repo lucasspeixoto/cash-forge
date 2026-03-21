@@ -1,4 +1,5 @@
 import { useTheme } from '@/src/core/theme/theme.hooks';
+import { typography } from '@/src/core/theme/theme.typography';
 import { TransactionRow } from '@/src/ui/transactions/components/TransactionRow';
 import { WalletCard } from '@/src/ui/transactions/components/WalletCard';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -199,16 +200,12 @@ const styles = StyleSheet.create({
     borderRadius: 128,
   },
   heroLabel: {
-    fontSize: 12,
+    ...typography.small,
     textTransform: 'uppercase',
-    letterSpacing: 2,
     marginBottom: 8,
-    fontFamily: Platform.OS === 'ios' ? 'System' : 'sans-serif',
   },
   heroBalance: {
-    fontSize: 40,
-    fontWeight: '800',
-    letterSpacing: -1,
+    ...typography.largeTitle,
   },
   heroStatsContainer: {
     flexDirection: 'row',
@@ -221,14 +218,12 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
   statLabel: {
-    fontSize: 10,
+    ...typography.small,
     textTransform: 'uppercase',
-    letterSpacing: 1,
     marginBottom: 4,
   },
   statValue: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    ...typography.subtitle,
   },
   bentoGrid: {
     gap: 24,
@@ -250,14 +245,11 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   cardTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    ...typography.subtitle,
   },
   seeAllText: {
-    fontSize: 12,
+    ...typography.smallMedium,
     textTransform: 'uppercase',
-    letterSpacing: 1,
-    fontWeight: 'bold',
   },
   donutContainer: {
     width: 192,
@@ -274,11 +266,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   donutTotal: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    ...typography.title,
   },
   donutLabel: {
-    fontSize: 10,
+    ...typography.small,
     opacity: 0.6,
   },
   categoryList: {
@@ -303,11 +294,10 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   categoryName: {
-    fontSize: 12,
+    ...typography.small,
   },
   categoryPercentage: {
-    fontSize: 12,
-    fontWeight: '600',
+    ...typography.smallMedium,
   },
   transactionsList: {
     gap: 24,
@@ -322,18 +312,23 @@ const styles = StyleSheet.create({
   },
   fab: {
     position: 'absolute',
-    bottom: Platform.OS === 'ios' ? 110 : 90,
-    right: 24,
+    bottom: 12,
+    right: 20,
     width: 56,
     height: 56,
-    borderRadius: 16,
-    justifyContent: 'center',
+    borderRadius: 28,
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.25,
-    shadowRadius: 15,
-    elevation: 8,
-    zIndex: 40,
+    justifyContent: 'center',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#4F46E5',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 8,
+      },
+    }),
   },
 });

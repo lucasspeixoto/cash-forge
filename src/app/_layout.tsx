@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Stack, type ExternalPathString, type RelativePathString } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { ThemeProvider } from '../core/theme/theme.provider';
+import { AlertBox } from '../shared/components/alert-box';
 import { AuthProvider } from '../ui/auth/view-models/useAuth';
 import { LoadingOverlay } from '../ui/shared/components/LoadingOverlay';
 
@@ -30,6 +31,7 @@ export default function RootLayout() {
         <AuthProvider>
           <MainLayout />
           <LoadingOverlay />
+          <AlertBox />
         </AuthProvider>
       </QueryClientProvider>
       {/* </SplashScreenProvider> */}

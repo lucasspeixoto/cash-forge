@@ -1,4 +1,5 @@
 import { useTheme } from '@/src/core/theme/theme.hooks';
+import { typography } from '@/src/core/theme/theme.typography';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
@@ -31,12 +32,11 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
   walletName: {
-    fontSize: 10,
+    ...typography.small,
     textTransform: 'uppercase',
     marginBottom: 4,
   },
   walletBalance: {
-    fontSize: 16,
-    fontWeight: 'bold',
+    ...typography.bodyMedium,
   },
 });

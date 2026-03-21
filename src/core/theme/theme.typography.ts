@@ -54,6 +54,12 @@ export const typography = StyleSheet.create({
     lineHeight: 24,
     letterSpacing: 0.2,
   },
+  link: {
+    fontSize: 16,
+    fontWeight: '500',
+    lineHeight: 24,
+    textDecorationLine: 'underline',
+  },
 });
 
 export const spacing = {

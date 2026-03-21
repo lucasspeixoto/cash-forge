@@ -1,4 +1,5 @@
 import { useTheme } from '@/src/core/theme/theme.hooks';
+import { typography } from '@/src/core/theme/theme.typography';
 import { MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -51,15 +52,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   txTitle: {
-    fontSize: 14,
-    fontWeight: '600',
+    ...typography.captionMedium,
     marginBottom: 2,
   },
   txSubtitle: {
-    fontSize: 11,
+    ...typography.small,
   },
   txAmount: {
-    fontSize: 14,
-    fontWeight: 'bold',
+    ...typography.captionMedium,
   },
 });
