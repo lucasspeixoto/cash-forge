@@ -1,5 +1,6 @@
-
 import { authRepository } from '@/src/data/repositories/auth/auth-repository';
+import messages from '@/src/shared/constants/messages';
+import { useAlertBoxStore } from '@/src/shared/hooks/use-alert-box';
 import { useLoadingStore } from '@/src/shared/hooks/use-loading';
 import { Session, User } from '@supabase/supabase-js';
 import * as Network from 'expo-network';
@@ -10,12 +11,15 @@ interface AuthContextProps {
   session: Session | null;
   user: User | null;
   isAuthenticated: boolean;
+  signIn: (email: string, password: string) => Promise<void>;
+  signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext({} as AuthContextProps);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
+  const { setMessage, setIsVisible } = useAlertBoxStore();
 
   const { setIsLoading } = useLoadingStore();
 
@@ -53,7 +57,35 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return () => subscription.subscription.unsubscribe();
   }, []);
 
+  async function signIn(email: string, password: string) {
+    setIsLoading(true);
+    const { error } = await authRepository.signIn(email, password);
 
+    if (error) {
+      const message = messages[error?.status as number] as string;
+
+      setMessage(message);
+      setIsVisible(true);
+      setIsLoading(false);
+    } else {
+      setIsLoading(false);
+      router.replace('/(tabs)');
+    }
+  }
+
+  async function signOut() {
+    setIsLoading(true);
+    const { error } = await authRepository.signOut();
+
+    if (error) {
+      const message = messages[error.status as number] as string;
+      setMessage(message);
+      setIsVisible(true);
+    }
+
+    setIsLoading(false);
+    router.replace('/(auth)/login');
+  }
 
   return (
     <AuthContext.Provider
@@ -61,6 +93,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         session,
         user: session?.user ?? null,
         isAuthenticated: !!session,
+        signIn,
+        signOut,
       }}
     >
       {children}

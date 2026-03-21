@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Forjando seu caixa",
-    "slug": "cash-forge",
+    "name": "FinancePro",
+    "slug": "finance-pro",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
-    "scheme": "cashforge",
+    "scheme": "financepro",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {

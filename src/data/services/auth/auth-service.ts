@@ -1,9 +1,7 @@
-
 import type { ResetPasswordData } from '@/src/domain/models/auth/reset-password-data';
 import type { SessionData } from '@/src/domain/models/auth/session-data.model';
 import { supabase } from '@/src/utils/supabase';
 import type { Session } from '@supabase/supabase-js';
-
 
 class AuthService {
   async signIn(email: string, password: string) {

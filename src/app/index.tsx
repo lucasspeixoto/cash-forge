@@ -1,5 +1,5 @@
-import { View } from "react-native";
-import { LoadingOverlay } from "../ui/shared/components/LoadingOverlay";
+import { View } from 'react-native';
+import { LoadingOverlay } from '../ui/shared/components/LoadingOverlay';
 
 export default function Index() {
   return (

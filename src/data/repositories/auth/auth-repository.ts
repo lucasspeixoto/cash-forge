@@ -1,8 +1,6 @@
-
 import type { IAuthSupabase } from '@/src/domain/models/auth/auth-supabase.model';
 import type { Session } from '@supabase/supabase-js';
 import { authService } from '../../services/auth/auth-service';
-
 
 type AuthStateCallback = (session: Session | null) => void;
 

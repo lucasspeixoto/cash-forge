@@ -1,4 +1,3 @@
-
 import { useTheme } from '@/src/core/theme/theme.hooks';
 import { useLoadingStore } from '@/src/shared/hooks/use-loading';
 import { ActivityIndicator, Modal, StyleSheet, View } from 'react-native';
@@ -20,11 +19,7 @@ export const LoadingOverlay = () => {
               },
             ]}
           >
-            <ActivityIndicator
-              animating={true}
-              size="large"
-              color={colors.primary}
-            />
+            <ActivityIndicator animating={true} size="large" color={colors.primary} />
           </View>
         </Modal>
       ) : null}

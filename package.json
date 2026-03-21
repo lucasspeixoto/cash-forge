@@ -1,5 +1,5 @@
 {
-  "name": "cash-forge",
+  "name": "finance-pro",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
@@ -8,7 +8,12 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "format": "prettier --write .",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "doctor": "npx -y expo-doctor",
+    "doctor:check": "npx expo install --check",
+    "deploy:preview": "eas build -p android --profile preview"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
@@ -20,10 +25,12 @@
     "@supabase/supabase-js": "^2.99.3",
     "@tanstack/react-query": "^5.91.2",
     "expo": "~54.0.33",
+    "expo-blur": "~15.0.8",
     "expo-constants": "~18.0.13",
     "expo-font": "~14.0.11",
     "expo-haptics": "~15.0.8",
     "expo-image": "~3.0.11",
+    "expo-linear-gradient": "~15.0.8",
     "expo-linking": "~8.0.11",
     "expo-network": "~8.0.8",
     "expo-router": "~6.0.23",
