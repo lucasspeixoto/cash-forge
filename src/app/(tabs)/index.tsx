@@ -1,7 +1,7 @@
 import { useTheme } from '@/src/core/theme/theme.hooks';
 import { typography } from '@/src/core/theme/theme.typography';
-import { TransactionRow } from '@/src/ui/transactions/components/TransactionRow';
 import { AccountCard } from '@/src/ui/transactions/components/AccountCard';
+import { TransactionRow } from '@/src/ui/transactions/components/TransactionRow';
 import { MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
@@ -105,7 +105,6 @@ export default function HomeScreen() {
             <View
               style={[
                 styles.bentoCard,
-                styles.transactionsCard,
                 { backgroundColor: colors.card, borderColor: colors.border },
               ]}
             >
@@ -157,7 +156,6 @@ export default function HomeScreen() {
         </View>
       </ScrollView>
 
-      {/* Floating Action Button (FAB) */}
       <TouchableOpacity style={[styles.fab, { backgroundColor: colors.primary }]}>
         <MaterialIcons name="add" size={28} color={isDark ? colors.background : colors.surface} />
       </TouchableOpacity>
@@ -170,7 +168,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    paddingBottom: Platform.OS === 'ios' ? 120 : 100, // accommodate bottom tab bar
+    paddingBottom: Platform.OS === 'ios' ? 120 : 100
   },
   mainContent: {
     paddingHorizontal: 24,
@@ -236,7 +234,6 @@ const styles = StyleSheet.create({
   categoryCard: {
     alignItems: 'center',
   },
-  transactionsCard: {},
   cardHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
