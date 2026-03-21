@@ -1,15 +1,26 @@
 import { useTheme } from '@/src/core/theme/theme.hooks';
 import { typography } from '@/src/core/theme/theme.typography';
+import { useDashboard } from '@/src/ui/dashboard/view-models/useDashboard';
 import { AccountCard } from '@/src/ui/transactions/components/AccountCard';
 import { TransactionRow } from '@/src/ui/transactions/components/TransactionRow';
+import { formatCurrency } from '@/src/utils/currency';
 import { MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function HomeScreen() {
   const { colors, isDark } = useTheme();
+
+  const {
+    totalBalance, monthlyIncome, monthlyExpense, topCategories,
+    recentTransactions, accounts, fetchDashboardData
+  } = useDashboard();
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, [fetchDashboardData]);
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
@@ -27,7 +38,7 @@ export default function HomeScreen() {
                 Patrimônio Total
               </Text>
               <Text style={[styles.heroBalance, { color: isDark ? colors.primary : colors.primary }]}>
-                R$ 142.850,00
+                {formatCurrency(totalBalance)}
               </Text>
 
               <View style={styles.heroStatsContainer}>
@@ -38,7 +49,9 @@ export default function HomeScreen() {
                   ]}
                 >
                   <Text style={[styles.statLabel, { color: colors.textTertiary }]}>Receita Mensal</Text>
-                  <Text style={[styles.statValue, { color: colors.success }]}>+ R$ 12.400</Text>
+                  <Text style={[styles.statValue, { color: colors.success }]}>
+                    + {formatCurrency(monthlyIncome)}
+                  </Text>
                 </View>
                 <View
                   style={[
@@ -47,7 +60,9 @@ export default function HomeScreen() {
                   ]}
                 >
                   <Text style={[styles.statLabel, { color: colors.textTertiary }]}>Despesa Mensal</Text>
-                  <Text style={[styles.statValue, { color: colors.tertiary }]}>- R$ 5.120</Text>
+                  <Text style={[styles.statValue, { color: colors.tertiary }]}>
+                    - {formatCurrency(monthlyExpense)}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -78,26 +93,27 @@ export default function HomeScreen() {
                     { borderColor: colors.border, borderTopColor: colors.primary, borderRightColor: colors.tertiary },
                   ]}
                 >
-                  <Text style={[styles.donutTotal, { color: colors.text }]}>R$ 5.1k</Text>
+                  <Text style={[styles.donutTotal, { color: colors.text }]} numberOfLines={1} adjustsFontSizeToFit>
+                    {formatCurrency(monthlyExpense)}
+                  </Text>
                   <Text style={[styles.donutLabel, { color: colors.textTertiary }]}>TOTAL</Text>
                 </View>
               </View>
 
               <View style={styles.categoryList}>
-                <View style={styles.categoryRow}>
-                  <View style={styles.categoryRowLeft}>
-                    <View style={[styles.dot, { backgroundColor: colors.primary }]} />
-                    <Text style={[styles.categoryName, { color: colors.textSecondary }]}>Essenciais</Text>
-                  </View>
-                  <Text style={[styles.categoryPercentage, { color: colors.text }]}>65%</Text>
-                </View>
-                <View style={styles.categoryRow}>
-                  <View style={styles.categoryRowLeft}>
-                    <View style={[styles.dot, { backgroundColor: colors.tertiary }]} />
-                    <Text style={[styles.categoryName, { color: colors.textSecondary }]}>Lazer</Text>
-                  </View>
-                  <Text style={[styles.categoryPercentage, { color: colors.text }]}>25%</Text>
-                </View>
+                {topCategories.length > 0 ? (
+                  topCategories.map((cat, index) => (
+                    <View key={cat.id || index} style={styles.categoryRow}>
+                      <View style={styles.categoryRowLeft}>
+                        <View style={[styles.dot, { backgroundColor: cat.color || (index === 0 ? colors.primary : colors.tertiary) }]} />
+                        <Text style={[styles.categoryName, { color: colors.textSecondary }]}>{cat.name}</Text>
+                      </View>
+                      <Text style={[styles.categoryPercentage, { color: colors.text }]}>{cat.percentage}%</Text>
+                    </View>
+                  ))
+                ) : (
+                  <Text style={{ color: colors.textTertiary, textAlign: 'center', marginTop: 8 }}>Sem gastos no período</Text>
+                )}
               </View>
             </View>
 
@@ -116,28 +132,23 @@ export default function HomeScreen() {
               </View>
 
               <View style={styles.transactionsList}>
-                <TransactionRow
-                  icon="shopping-bag"
-                  title="Apple Store"
-                  subtitle="Eletrônicos • Hoje"
-                  amount="- R$ 899,00"
-                  amountColor={colors.tertiary}
-                />
-                <TransactionRow
-                  icon="restaurant"
-                  title="Le Jazz Brasserie"
-                  subtitle="Alimentação • Ontem"
-                  amount="- R$ 342,50"
-                  amountColor={colors.tertiary}
-                />
-                <TransactionRow
-                  icon="trending-up"
-                  title="Dividendos ITUB4"
-                  subtitle="Investimentos • 12 Set"
-                  amount="+ R$ 1.250,00"
-                  amountColor={colors.success}
-                  iconColor={colors.success}
-                />
+                {recentTransactions.length > 0 ? (
+                  recentTransactions.map(tx => (
+                    <TransactionRow
+                      key={tx.id}
+                      icon={(tx.categories?.icon || (tx.type === 'income' ? 'trending-up' : 'receipt')) as any}
+                      title={tx.description || tx.categories?.name || 'Transação'}
+                      subtitle={`${tx.categories?.name || 'Sem categoria'} • ${new Date(tx.date).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}`}
+                      amount={`${tx.type === 'income' ? '+' : '-'} ${formatCurrency(tx.amount)}`}
+                      amountColor={tx.type === 'income' ? colors.success : colors.text}
+                      iconColor={tx.categories?.color || (tx.type === 'income' ? colors.success : colors.primary)}
+                    />
+                  ))
+                ) : (
+                  <Text style={{ color: colors.textTertiary, textAlign: 'center', marginVertical: 16 }}>
+                    Nenhuma transação recente
+                  </Text>
+                )}
               </View>
             </View>
           </View>
@@ -148,9 +159,20 @@ export default function HomeScreen() {
           >
             <Text style={[styles.cardTitle, { color: colors.text, marginBottom: 16 }]}>Minhas Contas</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.accountsScroll}>
-              <AccountCard name="Nubank" balance="R$ 24.500" borderColor={colors.primary} />
-              <AccountCard name="XP Investimentos" balance="R$ 118.350" borderColor={colors.accent} />
-              <AccountCard name="Carteira" balance="R$ 450,00" borderColor={colors.textTertiary} />
+              {accounts.length > 0 ? (
+                accounts.map(acc => (
+                  <AccountCard
+                    key={acc.id}
+                    name={acc.name}
+                    balance={formatCurrency(acc.balance)}
+                    borderColor={acc.color || (isDark ? colors.border : colors.primary)}
+                  />
+                ))
+              ) : (
+                <Text style={{ color: colors.textTertiary, padding: 16 }}>
+                  Nenhuma conta encontrada
+                </Text>
+              )}
             </ScrollView>
           </View>
         </View>
@@ -177,7 +199,8 @@ const styles = StyleSheet.create({
   },
   heroSection: {
     borderRadius: 24,
-    padding: 32,
+    paddingVertical: 32,
+    paddingHorizontal: 10,
     overflow: 'hidden',
     position: 'relative',
     shadowColor: '#000',
@@ -207,7 +230,7 @@ const styles = StyleSheet.create({
   },
   heroStatsContainer: {
     flexDirection: 'row',
-    gap: 16,
+    gap: 8,
     marginTop: 32,
   },
   heroStatBox: {
@@ -221,15 +244,15 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   statValue: {
-    ...typography.subtitle,
+    ...typography.small,
   },
   bentoGrid: {
     gap: 24,
   },
   bentoCard: {
     borderRadius: 24,
-    padding: 24,
     borderWidth: 1,
+    overflow: 'hidden',
   },
   categoryCard: {
     alignItems: 'center',
@@ -239,6 +262,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
+    paddingHorizontal: 24,
+    paddingTop: 24,
     marginBottom: 24,
   },
   cardTitle: {
@@ -273,6 +298,8 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: 24,
     gap: 8,
+    paddingHorizontal: 24,
+    paddingBottom: 24,
   },
   categoryRow: {
     flexDirection: 'row',
@@ -298,6 +325,8 @@ const styles = StyleSheet.create({
   },
   transactionsList: {
     gap: 24,
+    paddingHorizontal: 24,
+    paddingBottom: 24,
   },
   accountsSection: {
     borderRadius: 24,

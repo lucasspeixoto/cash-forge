@@ -38,6 +38,11 @@ export const typography = StyleSheet.create({
     fontWeight: '500',
     lineHeight: 20,
   },
+  extraSmall: {
+    fontSize: 10,
+    fontWeight: '400',
+    lineHeight: 16,
+  },
   small: {
     fontSize: 12,
     fontWeight: '400',

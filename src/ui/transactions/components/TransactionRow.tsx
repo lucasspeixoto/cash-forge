@@ -23,9 +23,9 @@ export function TransactionRow({ icon, title, subtitle, amount, amountColor, ico
         <View style={[styles.txIconContainer, { backgroundColor: colors.borderLight }]}>
           <MaterialIcons name={icon} size={24} color={iconColor || defaultIconColor} />
         </View>
-        <View>
-          <Text style={[styles.txTitle, { color: colors.text }]}>{title}</Text>
-          <Text style={[styles.txSubtitle, { color: colors.textSecondary }]}>{subtitle}</Text>
+        <View style={styles.txTextContainer}>
+          <Text style={[styles.txTitle, { color: colors.text }]} numberOfLines={1}>{title}</Text>
+          <Text style={[styles.txSubtitle, { color: colors.textSecondary }]} numberOfLines={1}>{subtitle}</Text>
         </View>
       </View>
       <Text style={[styles.txAmount, { color: amountColor }]}>{amount}</Text>
@@ -43,10 +43,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 2,
+    flex: 1,
+    marginRight: 2,
+
+
+  },
+  txTextContainer: {
+    flex: 1,
+
   },
   txIconContainer: {
-    width: 48,
-    height: 48,
+    width: 32,
+    height: 32,
+    marginRight: 2,
     borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',
@@ -59,6 +68,6 @@ const styles = StyleSheet.create({
     ...typography.small,
   },
   txAmount: {
-    ...typography.captionMedium,
+    ...typography.small,
   },
 });
